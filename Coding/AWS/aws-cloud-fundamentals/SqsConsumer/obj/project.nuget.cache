@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "CS9o0FVe5Hycb0NUO6un0TjGBmH9s/WOAOXl+IpSyCLqhFe4dcDDkUbqMdTAjAlUyLaP23Suov8YRS+7LNmd8g==",
+  "success": true,
+  "projectFilePath": "/Users/oscarreinagustafsson/Desktop/StartUp/Coding/AWS/aws-cloud-fundamentals/SqsConsumer/SqsConsumer.csproj",
+  "expectedPackageFiles": [
+    "/Users/oscarreinagustafsson/.nuget/packages/awssdk.core/3.7.103.23/awssdk.core.3.7.103.23.nupkg.sha512",
+    "/Users/oscarreinagustafsson/.nuget/packages/awssdk.sqs/3.7.100.61/awssdk.sqs.3.7.100.61.nupkg.sha512"
+  ],
+  "logs": []
+}
