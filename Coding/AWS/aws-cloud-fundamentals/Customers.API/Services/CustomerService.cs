@@ -1,4 +1,5 @@
-﻿using Customers.Api.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+using Customers.Api.Domain;
 using Customers.Api.Mapping;
 using Customers.Api.Repositories;
 using FluentValidation;
@@ -11,7 +12,7 @@ public class CustomerService : ICustomerService
     private readonly ICustomerRepository _customerRepository;
     private readonly IGitHubService _gitHubService;
 
-    public CustomerService(ICustomerRepository customerRepository, 
+    public CustomerService(ICustomerRepository customerRepository,
         IGitHubService gitHubService)
     {
         _customerRepository = customerRepository;
@@ -24,16 +25,16 @@ public class CustomerService : ICustomerService
         if (existingUser is not null)
         {
             var message = $"A user with id {customer.Id} already exists";
-            throw new ValidationException(message, GenerateValidationError(nameof(Customer), message));
+            throw new FluentValidation.ValidationException(message, GenerateValidationError(nameof(customer.Id), message));
         }
 
         var isValidGitHubUser = await _gitHubService.IsValidGitHubUser(customer.GitHubUsername);
         if (!isValidGitHubUser)
         {
             var message = $"There is no GitHub user with username {customer.GitHubUsername}";
-            throw new ValidationException(message, GenerateValidationError(nameof(customer.GitHubUsername), message));
+            throw new FluentValidation.ValidationException(message, GenerateValidationError(nameof(customer.GitHubUsername), message));
         }
-        
+
         var customerDto = customer.ToCustomerDto();
         return await _customerRepository.CreateAsync(customerDto);
     }
@@ -53,14 +54,14 @@ public class CustomerService : ICustomerService
     public async Task<bool> UpdateAsync(Customer customer)
     {
         var customerDto = customer.ToCustomerDto();
-        
+
         var isValidGitHubUser = await _gitHubService.IsValidGitHubUser(customer.GitHubUsername);
         if (!isValidGitHubUser)
         {
             var message = $"There is no GitHub user with username {customer.GitHubUsername}";
-            throw new ValidationException(message, GenerateValidationError(nameof(customer.GitHubUsername), message));
+            throw new FluentValidation.ValidationException(message, GenerateValidationError(nameof(customer.GitHubUsername), message));
         }
-        
+
         return await _customerRepository.UpdateAsync(customerDto);
     }
 

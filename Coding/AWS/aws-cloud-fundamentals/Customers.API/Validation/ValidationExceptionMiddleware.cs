@@ -1,5 +1,8 @@
-﻿using FluentValidation;
+﻿
+using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Customers.Api.Validation;
 
@@ -21,7 +24,7 @@ public class ValidationExceptionMiddleware
         catch (ValidationException exception)
         {
             context.Response.StatusCode = 400;
-            
+
             var error = new ValidationProblemDetails
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
@@ -34,10 +37,12 @@ public class ValidationExceptionMiddleware
             foreach (var validationFailure in exception.Errors)
             {
                 error.Errors.Add(new KeyValuePair<string, string[]>(
-                    validationFailure.PropertyName, 
+                    validationFailure.PropertyName,
                     new[] { validationFailure.ErrorMessage }));
             }
-            await context.Response.WriteAsJsonAsync(error);
+
+            var json = JsonConvert.SerializeObject(error);
+            await context.Response.WriteAsync(json);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json.Nodes;
+using System.Net.Http.Json;
 
 namespace Customers.Api.Services;
 
@@ -22,7 +23,7 @@ public class GitHubService : IGitHubService
             var message = responseBody!["message"]!.ToString();
             throw new HttpRequestException(message);
         }
-        
+
         return response.StatusCode == HttpStatusCode.OK;
     }
 }
